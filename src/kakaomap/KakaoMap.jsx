@@ -1,24 +1,25 @@
 /*global kakao*/
 import React, { useRef, useEffect } from 'react';
 
-const KakaoMap = () => {
+const KakaoMap = ({ latitude, longitude }) => {
   const mapRef = useRef(null);
+  const map = useRef(null);
 
   useEffect(() => {
     const script = document.createElement('script');
     script.async = true;
     script.src =
-      'https://dapi.kakao.com/v2/maps/sdk.js?appkey=a2b28a1779d96d6aa9747db4daa7572e&autoload=false';
+      'https://dapi.kakao.com/v2/maps/sdk.js?appkey=a2b28a1779d96d6aa9747db4daa7572e&autoload=false&libraries=services,clusterer,drawing';
     document.head.appendChild(script);
 
     script.onload = () => {
       kakao.maps.load(() => {
         let options = {
-          center: new kakao.maps.LatLng(37.506502, 127.053617),
+          center: new kakao.maps.LatLng(latitude, longitude),
           level: 7,
         };
 
-        const map = new window.kakao.maps.Map(mapRef.current, options);
+        map.current = new window.kakao.maps.Map(mapRef.current, options);
       });
     };
   }, []);

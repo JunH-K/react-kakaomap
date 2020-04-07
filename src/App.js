@@ -1,10 +1,10 @@
 import React from 'react';
-import KakaoMap from './kakaomap/KakaoMap';
+import Container from "./kakaomap/Container";
 
 function App() {
   return (
     <div className="App">
-      <KakaoMap />
+      <Container />
     </div>
   );
 }
