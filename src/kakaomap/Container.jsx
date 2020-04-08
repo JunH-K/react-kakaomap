@@ -1,6 +1,7 @@
 /*global kakao*/
 import React, { useEffect, useState } from 'react';
 import KakaoMap from './KakaoMap';
+import mock from './mock';
 
 const Container = () => {
   const [latitude, setLatitude] = useState(37.507502);
@@ -25,15 +26,17 @@ const Container = () => {
   return (
     <>
       <KakaoMap latitude={latitude} longitude={longitude}>
-        <CustomOverlay
-          imageSrc={
-            'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png'
-          }
-          imageSize={{ width: 64, height: 69 }}
-          imageOption={{ x: 27, y: 69 }}
-          latitude={latitude}
-          longitude={longitude}
-        />
+        {mock.map((marker) => {
+          return (
+            <CustomOverlay
+              imageSrc={marker.imageSrc}
+              imageSize={{ width: 64, height: 69 }}
+              imageOption={{ x: marker.x, y: marker.y }}
+              latitude={marker.latitude}
+              longitude={marker.longitude}
+            />
+          );
+        })}
       </KakaoMap>
       <button onClick={onClickUp}>위</button>
       <button onClick={onClickDown}>아래</button>
