@@ -1,30 +1,29 @@
 /*global kakao*/
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
-const KakaoMap = ({ latitude, longitude }) => {
+const KakaoMap = (props) => {
   const mapRef = useRef(null);
-  const map = useRef(null);
+  const [map, setMap] = useState(null);
 
   useEffect(() => {
-    const script = document.createElement('script');
-    script.async = true;
-    script.src =
-      'https://dapi.kakao.com/v2/maps/sdk.js?appkey=a2b28a1779d96d6aa9747db4daa7572e&autoload=false&libraries=services,clusterer,drawing';
-    document.head.appendChild(script);
-
-    script.onload = () => {
-      kakao.maps.load(() => {
-        let options = {
-          center: new kakao.maps.LatLng(latitude, longitude),
-          level: 7,
-        };
-
-        map.current = new window.kakao.maps.Map(mapRef.current, options);
-      });
-    };
-  }, []);
+    kakao.maps.load(() => {
+      const { latitude, longitude } = props;
+      let options = {
+        center: new kakao.maps.LatLng(latitude, longitude),
+        level: 7,
+      };
+      setMap(new kakao.maps.Map(mapRef.current, options));
+    });
+  }, [props]);
   return (
-    <div id="map" style={{ width: '500px', height: '500px' }} ref={mapRef} />
+    <div id="map" style={{ width: '500px', height: '500px' }} ref={mapRef}>
+      {React.Children.map(props.children, (child) => {
+        return React.cloneElement(child, {
+          map,
+          kakao,
+        });
+      })}
+    </div>
   );
 };
 

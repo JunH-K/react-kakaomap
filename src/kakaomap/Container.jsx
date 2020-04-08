@@ -1,8 +1,72 @@
-import React from 'react';
+/*global kakao*/
+import React, { useEffect, useState } from 'react';
 import KakaoMap from './KakaoMap';
 
 const Container = () => {
-  return <KakaoMap latitude={37.506502} longitude={127.053617} />;
+  const [latitude, setLatitude] = useState(37.507502);
+  const [longitude, setLongitude] = useState(127.053617);
+
+  const onClickUp = () => {
+    setLatitude(latitude + 0.001);
+  };
+
+  const onClickDown = () => {
+    setLatitude(latitude - 0.001);
+  };
+
+  const onClickRight = () => {
+    setLongitude(longitude + 0.001);
+  };
+
+  const onClickLeft = () => {
+    setLongitude(longitude - 0.001);
+  };
+
+  return (
+    <>
+      <KakaoMap latitude={latitude} longitude={longitude}>
+        <CustomOverlay
+          imageSrc={
+            'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png'
+          }
+          imageSize={{ width: 64, height: 69 }}
+          imageOption={{ x: 27, y: 69 }}
+          latitude={latitude}
+          longitude={longitude}
+        />
+      </KakaoMap>
+      <button onClick={onClickUp}>위</button>
+      <button onClick={onClickDown}>아래</button>
+      <button onClick={onClickLeft}>왼쪽</button>
+      <button onClick={onClickRight}>오른쪽</button>
+    </>
+  );
+};
+
+const CustomOverlay = ({ imageSrc, map, latitude, longitude, kakao }) => {
+  debugger;
+  useEffect(() => {
+    if (map && kakao) {
+      const imageSize = new kakao.maps.Size(64, 69);
+      const imageOption = { offset: new kakao.maps.Point(27, 69) };
+
+      const markerImage = new kakao.maps.MarkerImage(
+        imageSrc,
+        imageSize,
+        imageOption
+      );
+      const markerPosition = new kakao.maps.LatLng(latitude, longitude);
+
+      const marker = new kakao.maps.Marker({
+        position: markerPosition,
+        image: markerImage,
+      });
+
+      marker.setMap(map);
+    }
+  }, [map]);
+
+  return null;
 };
 
 export default Container;
