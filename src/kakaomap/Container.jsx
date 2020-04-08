@@ -25,7 +25,7 @@ const Container = () => {
 
   return (
     <>
-      <KakaoMap latitude={latitude} longitude={longitude}>
+      <KakaoMap latitude={37.507502} longitude={127.053617}>
         {mock.map((marker) => {
           return (
             <CustomOverlay
@@ -47,7 +47,6 @@ const Container = () => {
 };
 
 const CustomOverlay = ({ imageSrc, map, latitude, longitude, kakao }) => {
-  debugger;
   useEffect(() => {
     if (map && kakao) {
       const imageSize = new kakao.maps.Size(64, 69);
